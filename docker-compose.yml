@@ -1,0 +1,33 @@
+version: '2.1'
+
+services:
+
+
+    avored-shop-php-image:
+        build:
+            dockerfile: ./docker/images/avored-shop-php-image.Dockerfile
+            args:
+                - UID=${UID:-1000}
+
+    avored-shop-nginx:
+        build:
+            dockerfile: ./docker/nginx/Dockerfile
+        links:
+            - avored-shop-php
+        container_name: avored-shop-nginx
+
+    avored-shop:
+        build:
+            dockerfile: ./docker/Dockerfile
+        container_name: avored-shop
+        links:
+            - avored-shop-php-image
+            - avored-shop-php
+            - avored-shop-nginx
+
+    avored-shop-php:
+        build:
+            dockerfile: ./docker/php/Dockerfile
+        container_name: avored-shop-php
+        depends_on:
+            - avored-shop-php-image 

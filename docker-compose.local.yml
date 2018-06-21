@@ -1,0 +1,34 @@
+version: '2.1'
+
+services:
+
+    avored-shop-php-image:
+        build:
+            context: ./projects/avored-shop
+
+    avored-shop:
+        build:
+            context: ./projects/avored-shop
+        volumes:
+            - ./projects/avored-shop:/var/www/avored-shop
+
+    avored-shop-php:
+        build:
+            context: ./projects/avored-shop
+        volumes:
+            - ./projects/avored-shop:/var/www/avored-shop
+
+    avored-shop-nginx:
+        build:
+            context: ./projects/avored-shop
+        expose:
+            - 80
+            - 443
+        ports:
+            - 48005:80
+        volumes:
+            - ./projects/avored-shop/public:/var/www/avored-shop/public
+networks:
+  default:
+    external:
+      name: docker_default
